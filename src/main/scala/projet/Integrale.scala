@@ -10,15 +10,27 @@ object Integrale {
 		val conf = new SparkConf().setAppName("Integrale")
 				val sc = new SparkContext(conf)
 
-
+		val min = 1
+		val max = 10
+		val n = 10
+		
+		val inteApproche = calcule(min, max, n, sc);
+		
+		
+		// Calcul of difference beetwen exact and calculated
+		val inteExacte = Math.log(max)-Math.log(min)
+		val diff = Math.abs(inteApproche-inteExacte)
+		
+		println("Valeur approché ==> "+inteApproche + " valeur exacte ===> "+inteExacte + " difference ==>"+diff)
+		
 	}
 
 	def calcule(min:Int,max:Int,slice:Int,sc:SparkContext):Double={
 
 			val pas=(max-min)*1.0/slice 
 
-					val inte = sc.parallelize(1 until slice, 1).map { i =>
-					pas*1.0/i
+					val inte = sc.parallelize(1 until slice).map { 
+			  i =>	pas*1.0/(min+i*pas);
 			}.reduce(_+_)
 
 			inte
