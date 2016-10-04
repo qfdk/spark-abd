@@ -32,13 +32,16 @@ function deploy()
 function run()
 {
     echo -e "\e[1;34m[info]\e[0m=======Standlond MODE=========="
-    ssh -i $KEY $USER@$HOST "spark-submit --class Simple --num-executors 2 --executor-cores 5  $CLUSTER_PATH/$JAR_NAME"
+    ssh -i $KEY $USER@$HOST "spark-submit --class projet.Integrale --num-executors 2 --executor-cores 5  $CLUSTER_PATH/$JAR_NAME"
+}
+
+function local() {
+  sbt clean
+  sbt package
+  spark-submit --class projet.Integrale --num-executors 2 --executor-cores 5 ./target/scala-2.10/$JAR_NAME
 }
 
 
-
 ## main
-
-if [[ $# -eq "0" ]]; then
-  assembly&&deploy&&run
-fi
+##assembly&&deploy&&run
+local
