@@ -4,9 +4,12 @@ USER=qfdk
 HOST=esir-abd-li-maiga
 
 JAR_NAME=spark-self-cibtained-project_2.10-1.0.0.jar
-PROJECT_PATH=/private/student/9/79/15004879/workspace/abd
-CLUSTER_PATH=/home/qfdk/abd
-CONF_PATH=ml.conf
+PROJECT_PATH=/private/student/9/79/15004879/workspace/spark-abd
+CLUSTER_PATH=/home/$USER/abd
+SPARK_HOME=/usr/local/spark-1.6.1-bin-hadoop2.6/bin
+#CONF_PATH=ml.conf
+echo -e "[info]\e[1;34m Number of sclice ? \e[0m"
+read SLICE
 
 function assembly(){
     cd  $PROJECT_PATH
@@ -32,16 +35,16 @@ function deploy()
 function run()
 {
     echo -e "\e[1;34m[info]\e[0m=======Standlond MODE=========="
-    ssh -i $KEY $USER@$HOST "spark-submit --class projet.Integrale --num-executors 2 --executor-cores 5  $CLUSTER_PATH/$JAR_NAME"
+    ssh $USER@$HOST "$SPARK_HOME/spark-submit --class projet.Bigram --executor-cores 5 --conf spark.default.parallelism=$SLICE  $CLUSTER_PATH/$JAR_NAME"
 }
 
 function local() {
   sbt clean
   sbt package
-  spark-submit --class projet.Integrale --num-executors 2 --executor-cores 5 ./target/scala-2.10/$JAR_NAME
+  spark-submit --class projet.Bigram --num-executors 2 --executor-cores 5 ./target/scala-2.10/$JAR_NAME
 }
 
 
 ## main
-##assembly&&deploy&&run
-local
+assembly&&deploy&&run
+#local
