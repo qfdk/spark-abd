@@ -12,10 +12,14 @@ object Integrale {
     val min = 1
     val max = 10
     // cut number
-    val n = 100000
+    val n = Integer.MAX_VALUE
+
+    val pas = (max - min) * 1.0 / n
 
     val inteApproche = calcule(min, max, n, sc);
 
+    // ERROR MAX ==> Theoreme 2.3 : http://www-irma.u-strasbg.fr/~bopp/CAPES/cours/integrale-approch.pdf
+    val errorMax = Math.pow(max-min,2)*1.0/(Math.pow(min,2)*n)
     // {\begin{matrix}\int {\frac  {1}{x}}\,{\mathrm  {d}}x=\ln \left|x\right|+C\end{matrix}};
     // Calcul of difference beetwen exact and calculated
     val inteExacte = Math.log(Math.abs(max)) - Math.log(Math.abs(min))
@@ -24,6 +28,7 @@ object Integrale {
     println("Valeur approché ==> " + inteApproche)
     println("Valeur exacte ===> " + inteExacte)
     println("Difference ==>" + diff)
+    println("errorMax ==>" + errorMax)
 
   }
 

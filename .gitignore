@@ -5,4 +5,8 @@
 
 project/target/*
 target/*
+<<<<<<< HEAD
 .*
+=======
+/bin/
+>>>>>>> 4f53d98c6c52542c0f4fd9a5f34fa04ddca35d85
