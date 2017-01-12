@@ -19,7 +19,7 @@ sudo dpkg -i scala-2.10.6.deb
 
 ### install Apache spark 1.6.1
 wget http://d3kbcqa49mib13.cloudfront.net/spark-1.6.1-bin-hadoop2.6.tgz
-tar zvf spark-1.6.1-bin-hadoop2.6.tgz
+tar -xzvf spark-1.6.1-bin-hadoop2.6.tgz
 sudo cp -r spark-1.6.1-bin-hadoop2.6 /usr/local/
 echo 'PATH=/usr/local/spark-1.6.1-bin-hadoop2.6/bin:$PATH' >> .bashrc
 source .bashrc
