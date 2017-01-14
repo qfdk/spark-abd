@@ -28,7 +28,7 @@ function assembly(){
 function deploy()
 {
   #  ssh -t $USER@$HOST  "rm $CLUSTER_PATH/*"
-    scp -i $KEY ~/$JAR_NAME $USER@$HOST:$CLUSTER_PATH/
+    scp -i $KEY "/Users/qfdk/$JAR_NAME" $USER@$HOST:$CLUSTER_PATH/
   #  scp $PROJECT_PATH/conf/$CONF_PATH $USER@$HOST:$CLUSTER_PATH/
     echo -e "\033[1;34m[info]\033[0m=======Deploy done !========="
     sleep 2
@@ -37,7 +37,7 @@ function deploy()
 function run()
 {
     echo -e "\033[1;34m[info]\033[0m=======Cluster MODE=========="
-    ssh -i $KEY $USER@$HOST "spark-submit --master yarn-cluster --class projet.Bigram --executor-cores 2 --conf spark.default.parallelism=$SLICE  $CLUSTER_PATH/$JAR_NAME"
+    ssh -i $KEY $USER@$HOST "spark-submit --master yarn-client --class projet.Integrale --executor-cores 1 --conf spark.default.parallelism=$SLICE $CLUSTER_PATH/$JAR_NAME"
 }
 
 function local() {
@@ -48,5 +48,5 @@ function local() {
 
 
 ## main
-assembly&&deploy&&run
-#local
+#assembly&&deploy&&run
+local

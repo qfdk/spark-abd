@@ -8,8 +8,7 @@ object Bigram {
   def main(args: Array[String]) {
     val conf = new SparkConf().setAppName("Bigram")
     val sc = new SparkContext(conf)
-
-    val file = sc.textFile("hdfs://c6401.ambari.apache.org:8020/user/vagrant/pg17489.txt")
+    val file = sc.textFile("/Users/qfdk/pg17489.txt")
     file.map {
       _.split('.').map { substrings =>
         substrings.trim.split(' ').
