@@ -47,13 +47,13 @@ function local() {
 
   echo "nbrExecutor,timeDebut,timeEnd,duration" > result.csv
   
-  for (( nbrExecutor=1; nbrExecutor<=5; nbrExecutor++ ))
+  for (( nbrExecutor=1; nbrExecutor<=20; nbrExecutor++ ))
   do
       for (( c=1; c<=10; c++ ))
       do  
           debut=`date +%s`
           date +%s
-          spark-submit --class projet.Bigram --num-executors $nbrExecutor --executor-cores 5 ./target/scala-2.10/$JAR_NAME
+          spark-submit --class projet.Integrale --num-executors $nbrExecutor --executor-cores 5 ./target/scala-2.10/$JAR_NAME
           fin=`date +%s`
           duration=$[$fin-$debut ]
           echo "$nbrExecutor,$debut,$fin,$duration" >> result.csv
