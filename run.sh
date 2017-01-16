@@ -43,7 +43,22 @@ function run()
 function local() {
   sbt clean
   sbt package
-  spark-submit --class projet.Bigram --num-executors 2 --executor-cores 5 ./target/scala-2.10/$JAR_NAME
+
+
+  echo "nbrExecutor,timeDebut,timeEnd,duration" > result.csv
+  
+  for (( nbrExecutor=1; nbrExecutor<=5; nbrExecutor++ ))
+  do
+      for (( c=1; c<=10; c++ ))
+      do  
+          debut=`date +%s`
+          date +%s
+          spark-submit --class projet.Bigram --num-executors $nbrExecutor --executor-cores 5 ./target/scala-2.10/$JAR_NAME
+          fin=`date +%s`
+          duration=$[$fin-$debut ]
+          echo "$nbrExecutor,$debut,$fin,$duration" >> result.csv
+      done
+  done
 }
 
 
