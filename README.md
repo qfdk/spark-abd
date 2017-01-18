@@ -44,3 +44,7 @@ hdfs dfs -mkdir /user/vagrant
 hadoop fs -chown -R vagrant /user/vagrant
 ```
 ![](./img/run.png)
+
+![](./img/1.png)
+![](./img/2.png)
+![](./img/3.png)
