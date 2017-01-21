@@ -14,9 +14,8 @@ function run()
 {
 	for ((cpt_core=1;cpt_core<=$executorCores;cpt_core++));do
 		for((j=0;j<5;j++));do
-		echo -e "[#]===> \033[1;34m [ time: $j cores: $cpt_core] execution\033[0m"
-		for((i=1;i<=$numExecutors;i++));do
-
+			echo -e "[#]===> \033[1;34m [ time: $j cores: $cpt_core] execution\033[0m"
+			for((i=1;i<=$numExecutors;i++));do
 			## clean env
 			#ssh -i $KEY $USER@$HOST  "hadoop fs -rm -r stage2016/output"
 			echo -e "[info]\033[1;34m [ $i ] Mode cluster\033[0m"
@@ -36,8 +35,8 @@ function run()
 			ssh -i $KEY $USER@$HOST "rm appId"
 			rm $appId
 		done;
-		done;
 	done;
+done;
 }
 
 run
