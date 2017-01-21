@@ -4,7 +4,7 @@ USER=vagrant
 HOST=c6401
 KEY=/Users/qfdk/ambari-vagrant/centos6.4/insecure_private_key
 JAR_NAME=spark-self-cibtained-project_2.10-1.0.0.jar
-#PROJECT_PATH=/private/student/9/79/15004879/workspace/spark-abd
+
 PROJECT_PATH=/Users/qfdk/GitHub/spark-abd
 CLUSTER_PATH=/home/$USER/abd
 
@@ -29,7 +29,6 @@ function deploy()
 {
   #  ssh -t $USER@$HOST  "rm $CLUSTER_PATH/*"
     scp -i $KEY "/Users/qfdk/$JAR_NAME" $USER@$HOST:$CLUSTER_PATH/
-  #  scp $PROJECT_PATH/conf/$CONF_PATH $USER@$HOST:$CLUSTER_PATH/
     echo -e "\033[1;34m[info]\033[0m=======Deploy done !========="
     sleep 2
 }
@@ -37,31 +36,36 @@ function deploy()
 function run()
 {
     echo -e "\033[1;34m[info]\033[0m=======Cluster MODE=========="
-    ssh -i $KEY $USER@$HOST "spark-submit --master yarn-client --class projet.Integrale --executor-cores 1 --conf spark.default.parallelism=$SLICE $CLUSTER_PATH/$JAR_NAME"
+    ssh -i $KEY $USER@$HOST "spark-submit --master yarn-cluster --class projet.Bigram --executor-cores 1 --conf spark.default.parallelism=$SLICE $CLUSTER_PATH/$JAR_NAME"
 }
 
 function local() {
   sbt clean
   sbt package
 
+  resultFileName=result/result_`date +'%d%m%Y_%H%M'`.csv
 
-  echo "nbrExecutor,timeDebut,timeEnd,duration" > result.csv
+  echo "n,executor,core,timeDebut,timeEnd,duration" > $resultFileName
   
-  for (( nbrExecutor=1; nbrExecutor<=20; nbrExecutor++ ))
-  do
-      for (( c=1; c<=10; c++ ))
-      do  
-          debut=`date +%s`
-          date +%s
-          spark-submit --class projet.Integrale --num-executors $nbrExecutor --executor-cores 5 ./target/scala-2.10/$JAR_NAME
-          fin=`date +%s`
-          duration=$[$fin-$debut ]
-          echo "$nbrExecutor,$debut,$fin,$duration" >> result.csv
-      done
-  done
+  for (( n=128;n<100000;n=$n*4 ))
+  do  
+    for (( nbrExecutor=1; nbrExecutor<=32; nbrExecutor=$nbrExecutor*2 ))
+    do
+        for (( nbCore=1; nbCore<=32; nbCore=$nbCore*2 ))
+        do  
+            debut=`date +%s`
+            date +%s
+            spark-submit --class projet.Integrale --num-executors $nbrExecutor --executor-cores $nbCore ./target/scala-2.10/$JAR_NAME $n
+            fin=`date +%s`
+            duration=$[$fin-$debut ]
+            echo "$n,$nbrExecutor,$nbCore,$debut,$fin,$duration" >>  $resultFileName
+            
+            echo "[INFO] n = $n executor = $nbrExecutor, nbcore = $nbCore, duration = $duration"
+        done
+    done
+ done
 }
-
-
+ 
 ## main
 #assembly&&deploy&&run
 local

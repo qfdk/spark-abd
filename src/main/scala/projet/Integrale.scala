@@ -12,8 +12,13 @@ object Integrale {
     val min = 1
     val max = 10
     // cut number
-    val n = Integer.MAX_VALUE
 
+    //println("Hello, " + args(0))
+   // println("ARGS ====>"+args)
+  //  args.foreach(arg => println(arg))
+
+    val n = args(0).toInt;
+    
     val pas = (max - min) * 1.0 / n
 
     val inteApproche = calcule(min, max, n, sc);
@@ -25,6 +30,7 @@ object Integrale {
     val inteExacte = Math.log(Math.abs(max)) - Math.log(Math.abs(min))
     val diff = Math.abs(inteApproche - inteExacte)
 
+    println("Valeur de n ==> " + n)
     println("Valeur approché ==> " + inteApproche)
     println("Valeur exacte ===> " + inteExacte)
     println("Difference ==>" + diff)
