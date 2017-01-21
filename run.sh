@@ -43,22 +43,29 @@ function local() {
   sbt clean
   sbt package
 
-  echo "nbrExecutor,timeDebut,timeEnd,duration" > result.csv
-  
-  for (( nbrExecutor=1; nbrExecutor<=20; nbrExecutor++ ))
-  do
-      for (( c=1; c<=10; c++ ))
-      do  
-          debut=`date +%s`
-          date +%s
-          spark-submit --class projet.Integrale --num-executors $nbrExecutor --executor-cores 5 ./target/scala-2.10/$JAR_NAME
-          fin=`date +%s`
-          duration=$[$fin-$debut]
-          echo "$nbrExecutor,$debut,$fin,$duration" >> result.csv
-      done
-  done
-}
+  resultFileName=result/result_`date +'%d%m%Y_%H%M'`.csv
 
+  echo "n,executor,core,timeDebut,timeEnd,duration" > $resultFileName
+  
+  for (( n=128;n<100000;n=$n*4 ))
+  do  
+    for (( nbrExecutor=1; nbrExecutor<=32; nbrExecutor=$nbrExecutor*2 ))
+    do
+        for (( nbCore=1; nbCore<=32; nbCore=$nbCore*2 ))
+        do  
+            debut=`date +%s`
+            date +%s
+            spark-submit --class projet.Integrale --num-executors $nbrExecutor --executor-cores $nbCore ./target/scala-2.10/$JAR_NAME $n
+            fin=`date +%s`
+            duration=$[$fin-$debut ]
+            echo "$n,$nbrExecutor,$nbCore,$debut,$fin,$duration" >>  $resultFileName
+            
+            echo "[INFO] n = $n executor = $nbrExecutor, nbcore = $nbCore, duration = $duration"
+        done
+    done
+ done
+}
+ 
 ## main
-assembly&&deploy&&run
-#local
+#assembly&&deploy&&run
+local
