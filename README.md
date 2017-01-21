@@ -39,12 +39,11 @@ bash install_spark.sh
 bash run.sh
 
 ## HDFS
+vagrant ssh c6401
 su hdfs
 hdfs dfs -mkdir /user/vagrant
 hadoop fs -chown -R vagrant /user/vagrant
 ```
-![](./img/run.png)
-
 ![](./img/1.png)
 ![](./img/2.png)
 ![](./img/3.png)
