@@ -15,11 +15,9 @@ object Bigram {
         substrings.trim.split(' ').
           map { _.replaceAll("""\W""", "").toLowerCase() }.
           sliding(2)
-      }.
-        flatMap { identity }.map { _.mkString("%") }.
-        groupBy { identity }.mapValues { _.size }
-    }.
-      flatMap { identity }.reduceByKey(_ + _).collect.
-      foreach { x => println(x._1 + ", " + x._2) }
+      }.flatMap { identity }.map { _.mkString("%") }
+       .groupBy { identity }.mapValues { _.size }
+    }.flatMap { identity }.reduceByKey(_ + _).collect
+    .foreach { x => println(x._1 + ", " + x._2) }
   }
 }
