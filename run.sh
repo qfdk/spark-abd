@@ -81,7 +81,7 @@ function perf_local_Bigram() {
   
   for ((cpt=0;cpt<5;cpt++))
   do
-          for (( nbThread=1; nbThread<=16; nbThread++ ))
+          for (( nbThread=1; nbThread<=5; nbThread++ ))
           do  
             debut=`date +%s`
             date +%s
@@ -98,5 +98,5 @@ function perf_local_Bigram() {
 #assembly&&deploy&&run
 #perf_local
 # local
-perf_local_Integral
+#perf_local_Integral
 perf_local_Bigram
