@@ -48,14 +48,14 @@ function perf_local_Integral() {
   sbt clean
   sbt package
 
-  resultFileName=result/result_`date +'%d%m%Y_%H%M'`.csv
+  resultFileName=result/result_inte_`date +'%d%m%Y_%H%M'`.csv
 
   echo "Prog,n,nbThread,timeDebut,timeEnd,duration" > $resultFileName
   
   
-  for (( n=1;n<1000000000;n=$n*2 ))
+  for (( n=10000;n<100000000;n=$n*16 ))
   do
-    for ((cpt=0;cpt<5;cpt++))
+    for ((cpt=0;cpt<1;cpt++))
       do  
           for (( nbThread=1; nbThread<=16; nbThread++ ))
           do  
@@ -75,7 +75,7 @@ function perf_local_Bigram() {
   sbt clean
   sbt package
 
-  resultFileName=result/result_`date +'%d%m%Y_%H%M'`.csv
+  resultFileName=result/result_bigram_`date +'%d%m%Y_%H%M'`.csv
 
   echo "Prog,n,nbThread,timeDebut,timeEnd,duration" > $resultFileName
   
@@ -99,4 +99,4 @@ function perf_local_Bigram() {
 #perf_local
 # local
 perf_local_Integral
-#perf_local_Bigram
+perf_local_Bigram
