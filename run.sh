@@ -53,7 +53,7 @@ function perf_local_Integral() {
   echo "Prog,n,nbThread,timeDebut,timeEnd,duration" > $resultFileName
   
   
-  for (( n=10000;n<100000000;n=$n*16 ))
+  for (( n=2;n<1000000000;n=$n*2 ))
   do
     for ((cpt=0;cpt<1;cpt++))
       do  
@@ -98,5 +98,5 @@ function perf_local_Bigram() {
 #assembly&&deploy&&run
 #perf_local
 # local
-#perf_local_Integral
+perf_local_Integral
 perf_local_Bigram
