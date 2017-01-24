@@ -18,7 +18,7 @@ function run()
 			for((i=1;i<=$numExecutors;i++));do
 			echo -e "[info]\033[1;34m [ $i ] Mode cluster\033[0m"
 			# nb=$[$i*$executorCores*2]
-			cmd="spark-submit --class projet.Bigram --master yarn-cluster --num-executors $i --executor-cores $cpt_core  ~/spark-self-cibtained-project_2.10-1.0.0.jar >tmp 2>&1&&cat tmp|grep proxy/application_[0-9]*_[0-9]*|uniq|sed -e 's/\//\n/g'|grep application>appId"
+			cmd="spark-submit --class projet.Integrale --master yarn-cluster --num-executors $i --executor-memory 512M --executor-cores $cpt_core  ~/spark-self-cibtained-project_2.10-1.0.0.jar 536870912 >tmp 2>&1&&cat tmp|grep proxy/application_[0-9]*_[0-9]*|uniq|sed -e 's/\//\n/g'|grep application>appId"
 			ssh -i $KEY $USER@$HOST $cmd
 			ssh -i $KEY $USER@$HOST "cat appId>>appIdList&&rm tmp"
 			## copy appId 2 local
