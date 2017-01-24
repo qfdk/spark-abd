@@ -55,7 +55,7 @@ function perf_local_Integral() {
   
   for (( n=2;n<1000000000;n=$n*2 ))
   do
-    for ((cpt=0;cpt<1;cpt++))
+    for ((cpt=0;cpt<5;cpt++))
       do  
           for (( nbThread=1; nbThread<=16; nbThread++ ))
           do  
