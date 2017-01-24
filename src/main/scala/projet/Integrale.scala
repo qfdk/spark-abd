@@ -42,7 +42,7 @@ object Integrale {
 
     val pas = (max - min) * 1.0 / nbPart
 
-    val inte = sc.parallelize(1 until nbPart).map {
+    val inte = sc.parallelize(1 to nbPart).map {
       i => pas * 1.0 / (min + i * pas);
     }.reduce(_ + _)
 

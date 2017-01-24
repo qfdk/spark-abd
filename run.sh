@@ -41,37 +41,63 @@ function local()
 {
   sbt clean
   sbt package
-  spark-submit --class projet.Integrale --num-executors 2 --executor-cores 2 ./target/scala-2.10/$JAR_NAME 10
+  spark-submit --class projet.Integrale --num-executors 2 --executor-cores 2 ./target/scala-2.10/$JAR_NAME $SLICE
 }
 
-function perf_local() {
+function perf_local_Integral() {
   sbt clean
   sbt package
 
-  resultFileName=result/result_`date +'%d%m%Y_%H%M'`.csv
+  resultFileName=result/result_inte_`date +'%d%m%Y_%H%M'`.csv
 
-  echo "n,executor,core,timeDebut,timeEnd,duration" > $resultFileName
+  echo "Prog,n,nbThread,timeDebut,timeEnd,duration" > $resultFileName
   
-  for (( n=128;n<100000;n=$n*4 ))
-  do  
-  for (( nbrExecutor=1; nbrExecutor<=32; nbrExecutor=$nbrExecutor*2 ))
+  
+  for (( n=2;n<1000000000;n=$n*2 ))
   do
-    for (( nbCore=1; nbCore<=32; nbCore=$nbCore*2 ))
+    for ((cpt=0;cpt<5;cpt++))
+    do  
+    for (( nbThread=1; nbThread<=16; nbThread++ ))
     do  
     debut=`date +%s`
     date +%s
-    spark-submit --class projet.Integrale --num-executors $nbrExecutor --executor-cores $nbCore ./target/scala-2.10/$JAR_NAME $n
+    spark-submit --class projet.Integrale  --executor-cores $nbThread ./target/scala-2.10/$JAR_NAME $n
     fin=`date +%s`
     duration=$[$fin-$debut ]
-    echo "$n,$nbrExecutor,$nbCore,$debut,$fin,$duration" >>  $resultFileName
-
-    echo "[INFO] n = $n executor = $nbrExecutor, nbcore = $nbCore, duration = $duration"
+    echo "Integral,$n,$nbThread,$debut,$fin,$duration" >>  $resultFileName
+    echo "[INFO] n = $n , nbcore = $nbThread, duration = $duration"
   done
 done
 done
 }
 
+function perf_local_Bigram() {
+  sbt clean
+  sbt package
+
+  resultFileName=result/result_bigram_`date +'%d%m%Y_%H%M'`.csv
+
+  echo "Prog,n,nbThread,timeDebut,timeEnd,duration" > $resultFileName
+  
+  for ((cpt=0;cpt<5;cpt++))
+  do
+    for (( nbThread=1; nbThread<=5; nbThread++ ))
+    do  
+    debut=`date +%s`
+    date +%s
+    spark-submit --class projet.Bigram  --executor-cores $nbThread ./target/scala-2.10/$JAR_NAME
+    fin=`date +%s`
+    duration=$[$fin-$debut ]
+    echo "Bigram,,$nbThread,$debut,$fin,$duration" >>  $resultFileName
+  done
+done
+}
+
+
 ## main
-assembly&&deploy&&run
-# perf_local
-# local
+## mode cluster
+#assembly&&deploy&&run
+
+local
+#perf_local_Integral
+#perf_local_Bigram
